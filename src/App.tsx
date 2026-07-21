@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from './db';
 import { StorageBanner } from './StorageBanner';
+import { Onboarding } from './Onboarding';
 import { SellScreen } from './screens/SellScreen';
 import { StockScreen } from './screens/StockScreen';
 import { NightScreen } from './screens/NightScreen';
@@ -20,6 +21,7 @@ export function App() {
   return (
     <div className="app">
       <StorageBanner />
+      {itemCount === 0 && <Onboarding />}
       <main>
         {active === 'sell' && <SellScreen nightStart={nightStart} />}
         {active === 'stock' && <StockScreen />}

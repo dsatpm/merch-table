@@ -558,6 +558,45 @@ td.num {
   margin: 12px 0;
 }
 
+.onboarding-modal {
+  text-align: center;
+}
+
+.onboarding-logo {
+  border-radius: 14px;
+  margin-bottom: 14px;
+}
+
+.onboarding-modal h3 {
+  text-align: left;
+}
+
+.onboarding-modal p {
+  text-align: left;
+}
+
+.onboarding-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin: 18px 0 4px;
+}
+
+.onboarding-dots .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+.onboarding-dots .dot.active {
+  background: var(--green);
+}
+
+.onboarding-actions {
+  justify-content: space-between;
+}
+
 .summary-pre {
   font-family: inherit;
   font-size: 15px;
