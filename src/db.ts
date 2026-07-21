@@ -89,8 +89,12 @@ export async function getSetting(key: string, fallback = 0): Promise<number> {
 
 /** Start a night session: totals reset, float recorded, last float remembered. */
 export async function startNewNight(float: number): Promise<void> {
+  // ties with a just-recorded sale (same ms) would leak it into the new
+  // night, so nightStart must land strictly after the last logged event
+  const lastEvent = await db.events.orderBy('ts').last();
+  const nightStart = Math.max(Date.now(), (lastEvent?.ts ?? 0) + 1);
   await db.settings.bulkPut([
-    { key: 'nightStart', value: Date.now() },
+    { key: 'nightStart', value: nightStart },
     { key: 'nightFloat', value: float },
     { key: 'lastFloat', value: float },
   ]);
