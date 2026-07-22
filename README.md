@@ -1,4 +1,4 @@
-![Merch Table](assets/icon.png)
+![Merch Table](public/icon-512.png)
 
 Local-first app for tracking merch table sales at shows. No backend, no accounts — everything lives in IndexedDB on the device and works fully offline. Ships as a PWA (Cloudflare Pages) and as native iOS/Android apps (Capacitor) from the same React codebase — no separate native rewrite.
 
