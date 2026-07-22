@@ -44,7 +44,7 @@ export function Onboarding({ onDismiss }: { onDismiss?: () => void } = {}) {
   return (
     <div className="modal-backdrop">
       <div className="modal onboarding-modal" role="dialog" aria-modal="true" aria-label="Welcome to Merch Table">
-        <img src="/public/merch-table.png" alt="" className="onboarding-logo" width={64} height={64} />
+        <img src="/merch-table.png" alt="" className="onboarding-logo" width={64} height={64} />
         <h3>{current.title}</h3>
         <p className="muted">{current.body}</p>
         <div className="onboarding-dots">
