@@ -183,11 +183,9 @@ export function NightScreen({ nightStart }: { nightStart: number }) {
         <h3>Reconcile cash box</h3>
         <div className="reconcile-box">
           <p className="muted">
-            Float {money(nightFloat)} + cash sales {money(t.cash)}
-            <br />
-            <strong className="drawer-expected">{money(expectedCash)}</strong> 
-            <br />
-            expected in the drawer
+            Float {money(nightFloat)} + cash sales {money(t.cash)} ={' '}
+            <strong className="drawer-expected">{money(expectedCash)}</strong> expected in the
+            drawer
           </p>
         </div>
         <label className="reconcile-count-label">
