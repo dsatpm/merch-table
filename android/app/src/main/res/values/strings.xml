@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Merch Table</string>
+    <string name="title_activity_main">Merch Table</string>
+    <string name="package_name">com.htpdevs.merchtable</string>
+    <string name="custom_url_scheme">com.htpdevs.merchtable</string>
+</resources>
