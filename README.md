@@ -1,6 +1,6 @@
 # Merch Table
 
-Local-first PWA for tracking merch table sales at shows. No backend, no accounts — everything lives in IndexedDB on the device and works fully offline.
+Local-first app for tracking merch table sales at shows. No backend, no accounts — everything lives in IndexedDB on the device and works fully offline. Ships as a PWA (Cloudflare Pages) and as native iOS/Android apps (Capacitor) from the same React codebase — no separate native rewrite.
 
 ## How it works
 
@@ -44,6 +44,30 @@ UI tests assert through the rendered screen, never by reading the database — t
 npm run build
 ```
 
-`dist/` is fully static — drop it on Cloudflare Pages, Vercel, or any static host. The service worker precaches everything, so after the first visit the app loads with no connection. Install to the home screen from the browser share menu.
+`dist/` is fully static — drop it on Cloudflare Pages, Vercel, or any static host. The service worker precaches everything, so after the first visit the app loads with no connection. Install to the home screen from the browser share menu. Live at merch-table.pages.dev.
 
 Real QA environment: airplane mode.
+
+## Native apps (iOS / Android)
+
+Same React app, wrapped with [Capacitor](https://capacitorjs.com) — `src/native.ts` gates all native-only behavior (status bar, splash screen, haptics) behind `Capacitor.isNativePlatform()`, so the web build is untouched. Bundle ID: `com.htpdevs.merchtable`.
+
+```sh
+npm run ios:open       # builds web assets, syncs, opens Xcode
+npm run android:open   # builds web assets, syncs, opens Android Studio
+npm run cap:sync       # just rebuild + sync, no IDE
+```
+
+After editing any source under `src/`, you must `cap:sync` (or use one of the `:open` scripts) before the native apps see the change — they run against the built `dist/`, copied into `ios/App/App/public` and `android/app/src/main/assets/public`, not against the dev server.
+
+**iOS** requires the full Xcode app (not just Command Line Tools) to build, sign, or run in the simulator — CocoaPods is not used, Capacitor 8 resolves plugins via Swift Package Manager automatically the first time you open the project in Xcode (needs network access once).
+
+**Android** builds from the CLI with just the Android SDK + a Java 17–21 JDK — Android Studio's bundled JBR works if your system default JDK is newer (Gradle doesn't support very new JDKs yet):
+
+```sh
+JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home" cd android && ./gradlew assembleDebug
+```
+
+**Regenerating icons/splash screens**: source art lives in `assets/icon.png` (1024×1024) and `assets/splash.png` (2732×2732, plain upscale of the logo — no padding, since splash screens get device-fit/cropped automatically, unlike the maskable PWA icon which needs a strict safe zone). Run `npm run assets:generate` after replacing either file; it regenerates every density for both platforms plus the PWA icon set (the PWA icon set it emits to `icons/` is unused — this project's web icons are hand-tuned in `public/`, wired in `vite.config.ts`, and shouldn't be overwritten by this command's `icons/` output).
+
+**Known gap**: the Android hardware back button uses Capacitor's default (exits the app — correct at the root screen, since this is a single-page tab app with no navigation stack) but does not close open modals (Stock item editor, price override, onboarding, etc.) — it exits instead. Fixing that needs centralized modal-open state across those components; not done yet.

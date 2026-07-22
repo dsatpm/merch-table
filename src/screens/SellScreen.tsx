@@ -11,6 +11,7 @@ import {
   type Item,
   type Payment,
 } from '../db';
+import { saleHaptic } from '../native';
 
 interface Sel {
   item: Item;
@@ -104,7 +105,7 @@ export function SellScreen({ nightStart }: { nightStart: number }) {
     );
     setSel(null);
     setFlash((f) => f + 1);
-    if (navigator.vibrate) navigator.vibrate(30);
+    saleHaptic();
   };
 
   const confirmOverride = () => {

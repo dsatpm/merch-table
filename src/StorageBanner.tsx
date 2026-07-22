@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Capacitor } from '@capacitor/core';
 
 interface InstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -14,9 +15,13 @@ const isStandalone = () =>
  * warn loudly when the browser won't promise persistence (private
  * browsing / storage-evictable mode), and nudge install-to-home-screen
  * since installed PWAs get friendlier storage treatment.
+ *
+ * None of that applies inside the native app shell — there's no private
+ * mode and it's already installed — so this renders nothing there.
  */
 export function StorageBanner() {
   const [persisted, setPersisted] = useState<boolean | null>(null);
+  const isNative = Capacitor.isNativePlatform();
   const [acked, setAcked] = useState(() => localStorage.getItem('storage-warn-ack') === '1');
   const [installEvt, setInstallEvt] = useState<InstallPromptEvent | null>(null);
   const [installDismissed, setInstallDismissed] = useState(
@@ -40,6 +45,8 @@ export function StorageBanner() {
     window.addEventListener('beforeinstallprompt', onPrompt);
     return () => window.removeEventListener('beforeinstallprompt', onPrompt);
   }, []);
+
+  if (isNative) return null;
 
   if (persisted === false && !acked) {
     return (
