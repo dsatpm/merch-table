@@ -23,7 +23,7 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,png,woff2}'],
+        globPatterns: ['**/*.{js,css,html,png,woff2,ttf}'],
         // the raw source logo is a 1.7MB export kept for reference/branding use;
         // it isn't rendered by the app, so don't ship it in the install precache
         globIgnores: ['merch-table.png'],

@@ -1,15 +1,30 @@
+@font-face {
+  font-family: 'Archivo-Black';
+  src: url('./fonts/ArchivoBlack-Regular.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sora-Regular';
+  src: url('./fonts/Sora-Regular.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --bg: #0f1115;
-  --surface: #181b22;
-  --surface-2: #21252f;
-  --border: #2e3340;
-  --text: #e8eaf0;
-  --muted: #8b91a0;
-  --green: #4ade80;
-  --green-dim: #14532d;
-  --blue: #60a5fa;
-  --blue-dim: #1e3a5f;
-  --red: #f87171;
+  --bg: #000000;
+  --surface: #050505;
+  --surface-2: #111111;
+  --border: #3a3a3a;
+  --text: #f2f2f2;
+  --muted: #7a7a7a;
+  --teal: #59d3fc;
+  --teal-dim: #3fa5ea;
+  --blue: #01186a;
+  --red: #ff3b3b;
   color-scheme: dark;
 }
 
@@ -27,11 +42,23 @@ body {
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Sora-Regular', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 17px;
   overscroll-behavior: none;
   -webkit-user-select: none;
   user-select: none;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 40;
+  opacity: 0.11;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 #root,
@@ -52,7 +79,7 @@ main {
 
 nav {
   display: flex;
-  border-top: 1px solid var(--border);
+  border-top: 2px solid var(--border);
   background: var(--surface);
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
@@ -62,13 +89,17 @@ nav button {
   min-height: 60px;
   background: none;
   border: none;
+  border-top: 3px solid transparent;
   color: var(--muted);
-  font-size: 17px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 nav button.active {
-  color: var(--green);
+  color: var(--text);
+  border-top-color: var(--text);
 }
 
 button {
@@ -82,8 +113,8 @@ input {
   font-family: inherit;
   font-size: 18px;
   background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
+  border: 2px solid var(--border);
+  border-radius: 0;
   color: var(--text);
   padding: 12px;
   width: 100%;
@@ -109,7 +140,7 @@ label input {
 .banner {
   padding: 14px 16px;
   font-size: 15px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 2px solid var(--border);
 }
 
 .banner p {
@@ -117,7 +148,7 @@ label input {
 }
 
 .banner.warn {
-  background: rgba(248, 113, 113, 0.12);
+  background: rgba(255, 59, 59, 0.1);
   border-bottom-color: var(--red);
 }
 
@@ -147,6 +178,39 @@ label input {
   text-align: center;
   padding: 48px 24px;
   font-size: 19px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+}
+
+/* ---- Splash ---- */
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+}
+
+.splash-logo {
+  width: min(100vw, 400px);
+  height: auto;
+  animation: splash-in 2000ms ease-out;
+}
+
+@keyframes splash-in {
+  0%, 25% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 /* ---- Sell screen ---- */
@@ -162,8 +226,9 @@ label input {
   display: flex;
   justify-content: space-between;
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  border: 2px solid var(--border);
+  border-radius: 0;
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
   padding: 12px 16px;
   font-size: 16px;
   color: var(--muted);
@@ -187,8 +252,8 @@ label input {
 
 .item-btn {
   min-height: 76px;
-  border-radius: 14px;
-  border: 1px solid var(--border);
+  border-radius: 0;
+  border: 2px solid var(--border);
   background: var(--surface);
   display: flex;
   flex-direction: column;
@@ -197,6 +262,15 @@ label input {
   gap: 4px;
   padding: 10px 14px;
   text-align: left;
+  transform: rotate(-0.6deg);
+}
+
+.item-btn:nth-child(even) {
+  transform: rotate(0.6deg);
+}
+
+.item-btn:nth-child(3n) {
+  transform: rotate(-0.3deg);
 }
 
 .item-btn-name {
@@ -211,8 +285,13 @@ label input {
 }
 
 .item-btn.selected {
-  border-color: var(--green);
-  background: var(--green-dim);
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--bg);
+}
+
+.item-btn.selected .item-btn-meta {
+  color: var(--surface-2);
 }
 
 .item-btn.soldout {
@@ -224,7 +303,7 @@ label input {
 }
 
 .totals-bar .sold-total strong {
-  color: var(--green);
+  color: var(--teal);
 }
 
 .size-row {
@@ -237,8 +316,8 @@ label input {
   flex: 1;
   min-width: 72px;
   min-height: 72px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
+  border-radius: 0;
+  border: 2px solid var(--border);
   background: var(--surface-2);
   display: flex;
   flex-direction: column;
@@ -259,8 +338,13 @@ label input {
 }
 
 .size-btn.selected {
-  border-color: var(--green);
-  background: var(--green-dim);
+  border-color: var(--text);
+  background: var(--text);
+}
+
+.size-btn.selected .size-btn-name,
+.size-btn.selected .size-btn-left {
+  color: var(--bg);
 }
 
 .size-btn.soldout {
@@ -279,22 +363,34 @@ label input {
 .pay-btn {
   flex: 1;
   min-height: 80px;
-  border-radius: 14px;
+  border-radius: 0;
   border: none;
   font-size: 20px;
   font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .pay-btn.cash {
-  background: var(--green-dim);
-  color: var(--green);
-  border: 1px solid var(--green);
+  background: var(--bg);
+  color: var(--teal);
+  border: 2px solid var(--teal);
+}
+
+.pay-btn.cash:active {
+  background: var(--teal);
+  color: var(--bg);
 }
 
 .pay-btn.digital {
-  background: var(--blue-dim);
-  color: var(--blue);
-  border: 1px solid var(--blue);
+  background: var(--bg);
+  color: var(--teal-dim);
+  border: 2px solid var(--teal-dim);
+}
+
+.pay-btn.digital:active {
+  background: var(--teal-dim);
+  color: var(--bg);
 }
 
 .pay-btn:disabled {
@@ -310,8 +406,8 @@ label input {
 .undo-arrow {
   width: 56px;
   min-height: 48px;
-  border-radius: 12px;
-  border: 1px dashed var(--border);
+  border-radius: 0;
+  border: 2px dashed var(--border);
   background: none;
   color: var(--muted);
   font-size: 22px;
@@ -337,8 +433,8 @@ label input {
   inset: 0;
   pointer-events: none;
   z-index: 50;
-  animation: flash 0.6s ease-out forwards;
-  box-shadow: inset 0 0 0 6px var(--green);
+  animation: flash 0.35s steps(2, end) forwards;
+  box-shadow: inset 0 0 0 10px var(--text);
   border-radius: 0;
 }
 
@@ -361,8 +457,8 @@ label input {
 
 .stock-row {
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  border: 2px solid var(--border);
+  border-radius: 0;
   padding: 14px 16px;
   text-align: left;
   min-height: 64px;
@@ -381,13 +477,17 @@ label input {
 
 .editor {
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  border: 2px solid var(--border);
+  border-radius: 0;
   padding: 16px;
 }
 
 .editor h3 {
   margin: 0 0 16px;
+  font-family: 'Archivo-Black', -apple-system, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  text-shadow: 2px 2px 0 var(--blue);
 }
 
 .variants-editor {
@@ -418,22 +518,24 @@ label input {
 /* ---- Buttons ---- */
 
 .primary {
-  background: var(--green);
-  color: #08130b;
-  border: none;
-  border-radius: 12px;
-  font-weight: 700;
+  background: var(--text);
+  color: var(--bg);
+  border: 2px solid var(--text);
+  border-radius: 0;
+  font-family: 'Archivo-Black', -apple-system, sans-serif;
   font-size: 17px;
   padding: 14px 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .ghost {
   background: none;
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  border: 2px solid var(--border);
+  border-radius: 0;
   color: var(--muted);
-  font-size: 16px;
-  padding: 12px 16px;
+  font-size: 17px;
+  padding: 14px 20px;
 }
 
 .ghost.small {
@@ -462,9 +564,12 @@ label input {
 .night h3 {
   margin: 0 0 10px;
   font-size: 16px;
+  font-family: 'Archivo-Black', -apple-system, sans-serif;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--muted);
+  letter-spacing: 0.05em;
+  color: var(--text);
+  font-weight: 900;
+  text-shadow: 2px 2px 0 var(--blue);
 }
 
 .big-totals {
@@ -475,8 +580,9 @@ label input {
 .big-total {
   flex: 1;
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  border: 2px solid var(--border);
+  border-radius: 0;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
   padding: 14px;
   display: flex;
   flex-direction: column;
@@ -495,7 +601,7 @@ table {
 
 td {
   padding: 10px 4px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 2px solid var(--border);
 }
 
 td.num {
@@ -503,22 +609,46 @@ td.num {
   font-variant-numeric: tabular-nums;
 }
 
+.reconcile-box {
+  display: block;
+  text-align: center;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.reconcile-box p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.reconcile-count-label {
+  margin-bottom: 10px;
+}
+
 .reconcile-result {
   font-size: 19px;
   font-weight: 700;
   padding: 12px;
-  border-radius: 10px;
+  border-radius: 0;
+  border: 2px solid transparent;
   text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 12px;
 }
 
 .reconcile-result.ok {
-  color: var(--green);
-  background: var(--green-dim);
+  color: var(--teal);
+  background: var(--bg);
+  border-color: var(--teal);
 }
 
 .reconcile-result.bad {
   color: var(--red);
-  background: rgba(248, 113, 113, 0.12);
+  background: var(--bg);
+  border-color: var(--red);
 }
 
 .night-actions {
@@ -532,7 +662,7 @@ td.num {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -542,8 +672,9 @@ td.num {
 
 .modal {
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
+  border: 2px solid var(--text);
+  border-radius: 0;
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
   padding: 20px;
   width: 100%;
   max-width: 360px;
@@ -551,6 +682,11 @@ td.num {
 
 .modal h3 {
   margin: 0 0 4px;
+  font-family: 'Archivo-Black', -apple-system, sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-shadow: 2px 2px 0 var(--teal);
 }
 
 .modal input {
@@ -563,12 +699,14 @@ td.num {
 }
 
 .onboarding-logo {
-  border-radius: 14px;
+  border-radius: 0;
   margin-bottom: 14px;
 }
 
 .onboarding-modal h3 {
   text-align: left;
+  font-size: 22px;
+  letter-spacing: 0.01em;
 }
 
 .onboarding-modal p {
@@ -585,12 +723,12 @@ td.num {
 .onboarding-dots .dot {
   width: 7px;
   height: 7px;
-  border-radius: 50%;
+  border-radius: 0;
   background: var(--border);
 }
 
 .onboarding-dots .dot.active {
-  background: var(--green);
+  background: var(--text);
 }
 
 .onboarding-actions {
@@ -601,8 +739,8 @@ td.num {
   font-family: inherit;
   font-size: 15px;
   background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
+  border: 2px solid var(--border);
+  border-radius: 0;
   padding: 12px;
   white-space: pre-wrap;
   -webkit-user-select: text;
