@@ -228,7 +228,6 @@ label input {
   background: var(--surface);
   border: 2px solid var(--border);
   border-radius: 0;
-  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
   padding: 12px 16px;
   font-size: 16px;
   color: var(--muted);
@@ -582,7 +581,6 @@ label input {
   background: var(--surface);
   border: 2px solid var(--border);
   border-radius: 0;
-  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
   padding: 14px;
   display: flex;
   flex-direction: column;
@@ -674,7 +672,6 @@ td.num {
   background: var(--surface);
   border: 2px solid var(--text);
   border-radius: 0;
-  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
   padding: 20px;
   width: 100%;
   max-width: 360px;
@@ -686,7 +683,7 @@ td.num {
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.02em;
-  text-shadow: 2px 2px 0 var(--teal);
+  text-shadow: 2px 2px 0 var(--blue);
 }
 
 .modal input {
