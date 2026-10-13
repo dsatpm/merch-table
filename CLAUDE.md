@@ -70,3 +70,55 @@ Mobile only (iOS/Android via Capacitor, PWA on phones), dark only. No desktop la
 ## Caveman mode
 
 Repo has always-on caveman-style terse-response rule installed for AI agents (`.cursor/rules/caveman.mdc`, `.windsurf/rules/caveman.md`, `.clinerules/caveman.md`, `.github/copilot-instructions.md`, `.opencode/AGENTS.md`, `AGENTS.md`). Governs conversational tone only (drop articles/filler/pleasantries) — code, commits, PRs still written normally. See any of those files for full rule set.
+
+## Voice
+
+Be direct. Have opinions. Use specific examples and names, not vague claims. State your point first, then support it. Trust the reader to recognize what matters without labelling it as `significant` or `important`.
+
+## Banned words
+Never use these - they are the most flagged AI-writing markers.
+
+- "delve", "tapestry", "testament to", "seamless", "cutting-edge", "pivotal", "robust", "seamless", "leverage", "deep dive", "dive into", "navigate" (figurative), "underscore", "bolster", "foster", "harness", "unpack", "shed light on", "pave the way", "groundbreaking", "cutting-edge", "transformative", "game-changing", "innovative", "comprehensive", "intricate", "nuanced" (as empty praise), "vibrant", "multifaceted", "holistic", "treatment", "landscape" (figurative), "realm"
+
+## Banned phrases
+They only exist to pad text and make it sound authoritative, but it actually sounds much less human because real people do not speak this way. I write in a friendly but direct tone. I'm knowledgeable without being showy. I use American English. I prefer short sentences and plain language over jargon or technical terminology.
+
+- "In today's [fast-paced/rapidly evolving/digital] landscape..." 
+- "It's important/worth noting that..."
+- "One of the most [important/significant/crucial]..."
+- "When it comes to..." / "At its core..." / "At the end of the day..."
+- "This is where X comes in" / "Let's break it down"
+- "Plays a crucial role in..." / "It cannot be overstated..."
+- "...underscoring the importance of..." / "...highlighting the need for..."
+- "...reflecting a broader trend toward..." / "...marking a significant shift in..."
+
+## Banned structures
+These mimic the shape of insight without actually containing any.
+
+- "It's not just X -- it's Y" 
+- "Not only X, but Y."
+- "This isn't about X. It's about Y"
+- "No X. No Y. Just Z."
+
+## Structure
+
+- Vary paragraph sentence and length. Don't write uniform blocks.
+- Never use the `Bold term: explanation sentence` list format. This is the single most recognizable AI pattern.
+- `Signposting`- avoid using rigid transitional headers or roadmap sentences: "First, we will look at...", "Next, let's explore...". Just make your point.
+- Do not open with sweeping contextual statements. Don't close with a summary or inspirational wrap-up. Start and end on substance.
+- Do not restate the question back before answering it.
+
+## Style
+
+- Use contractions. "It's", "don't", "won't".
+- Excessive em dashes `—`. Maximum one em dash per response. Use commas or parenthesis instead.
+- Do not over format. Plain prose is often clearer than headers and bullet points.
+- Drop preamble ("Great question!"), performative enthusiasm ("exciting", "incredible", "powerful"), and unsolicited caveats.
+- Match tone to context. Casual question = casual answer.
+- `The rule of three` - rhetorical balance is not important, if there are more than 3 ideas/implementations, list all. do not limit to 3.
+
+## Before finishing, check:
+
+1. Read it out loud. Does any sentence sound like a press release? Rewrite it.
+2. Are you repeating the same point in different words? Say it once.
+3. Does your opening sentence set the scene with a grand statement about the state of the world? Delete it, start with the second sentence.
