@@ -75,7 +75,7 @@ export function NightScreen({ nightStart }: { nightStart: number }) {
   };
 
   const summaryText = () => {
-    const lines: string[] = [`Merch — ${new Date().toLocaleDateString()}`];
+    const lines: string[] = [`Merch sales, ${new Date().toLocaleDateString()}`];
     for (const item of items) {
       for (const v of item.variants) {
         const n = soldTonight.get(variantKey(item.id!, v.name)) ?? 0;
@@ -86,7 +86,7 @@ export function NightScreen({ nightStart }: { nightStart: number }) {
       `Cash ${money(t.cash)} · Card/Venmo ${money(t.digital)} · Total ${money(t.cash + t.digital)}`,
     );
     if (negatives.length > 0) {
-      lines.push(`Recount: ${negatives.map((r) => `${r.label} (${r.left})`).join(', ')}`);
+      lines.push(`Count again: ${negatives.map((r) => `${r.label} (${r.left})`).join(', ')}`);
     }
     return lines.join('\n');
   };
@@ -171,13 +171,13 @@ export function NightScreen({ nightStart }: { nightStart: number }) {
       </section>
 
       <section className="section reveal" style={stagger(2)}>
-        <h2 className="section-title">Remaining inventory</h2>
+        <h2 className="section-title">What’s left</h2>
         {negatives.length > 0 && (
           <p className="callout is-warn">
             <IconWarning size={18} />
             <span>
-              {negatives.map((r) => r.label).join(', ')} went negative — recount before next
-              show.
+              {negatives.map((r) => r.label).join(', ')} sold more than you had in stock. Count
+              these again before the next show.
             </span>
           </p>
         )}
@@ -214,15 +214,15 @@ export function NightScreen({ nightStart }: { nightStart: number }) {
       </section>
 
       <section className="section reveal" style={stagger(3)}>
-        <h2 className="section-title">Reconcile cash box</h2>
+        <h2 className="section-title">Check your cash box</h2>
         <div className="bezel">
           <div className="bezel-core reconcile">
             <p className="equation">
-              Float {money(nightFloat)} + cash sales {money(t.cash)} ={' '}
-              <strong>{money(expectedCash)}</strong> expected in the drawer
+              Starting cash {money(nightFloat)} + cash sales {money(t.cash)} ={' '}
+              <strong>{money(expectedCash)}</strong> that should be in the box
             </p>
             <label className="field">
-              Counted now
+              How much is in the box now?
               <span className="input-wrap is-big">
                 <span className="input-prefix">$</span>
                 <input
@@ -231,7 +231,7 @@ export function NightScreen({ nightStart }: { nightStart: number }) {
                   inputMode="decimal"
                   min="0"
                   value={counted}
-                  placeholder="Count the box…"
+                  placeholder="Count the cash"
                   onChange={(e) => setCounted(e.target.value)}
                 />
               </span>
@@ -241,10 +241,10 @@ export function NightScreen({ nightStart }: { nightStart: number }) {
                 {balanced ? <IconCheck size={20} /> : <IconWarning size={20} />}
                 <span>
                   {balanced
-                    ? 'Cash box checks out'
+                    ? 'Your cash box matches'
                     : diff > 0
-                      ? `${money(diff)} over expected`
-                      : `${money(-diff)} short`}
+                      ? `${money(diff)} more than expected`
+                      : `${money(-diff)} less than expected`}
                 </span>
               </p>
             )}
@@ -258,7 +258,7 @@ export function NightScreen({ nightStart }: { nightStart: number }) {
           onClick={exportCsv}
           disabled={nightEvents.length === 0}
         >
-          Export tonight as CSV
+          Export tonight’s sales (CSV)
           <span className="btn-icon">
             <IconDownload size={20} />
           </span>
@@ -301,8 +301,8 @@ export function NightScreen({ nightStart }: { nightStart: number }) {
       <Sheet open={floatModal} onClose={() => setFloatModal(false)} label="Start new night">
         <h2 className="sheet-title">Start new night</h2>
         <p className="sheet-sub">
-          Tonight’s totals reset to zero. Sales stay in the log; inventory carries over. How much
-          change is in the cash box to start?
+          This sets tonight’s totals back to zero. Your past sales stay saved, and your stock
+          counts carry over. How much cash is in the box to start the night?
         </p>
         <div className="sheet-body">
           <label className="input-wrap is-big">
@@ -313,7 +313,7 @@ export function NightScreen({ nightStart }: { nightStart: number }) {
               inputMode="decimal"
               min="0"
               autoFocus
-              aria-label="Starting float"
+              aria-label="Starting cash"
               value={floatInput}
               onChange={(e) => setFloatInput(e.target.value)}
             />

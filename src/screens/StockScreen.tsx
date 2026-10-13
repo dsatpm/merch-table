@@ -57,7 +57,7 @@ export function StockScreen() {
   };
 
   const remove = async (item: Item) => {
-    if (!confirm(`Delete "${item.name}"? Past sales stay in the log.`)) return;
+    if (!confirm(`Delete "${item.name}"? Sales you already made will still be saved.`)) return;
     await db.items.delete(item.id!);
     setDraft(null);
   };
@@ -98,10 +98,10 @@ export function StockScreen() {
             <IconBox size={28} />
           </span>
           <p className="reveal" style={stagger(2)}>
-            Set up your merch at home, on wifi.
+            Add your merch at home before the show.
           </p>
           <p className="muted reveal" style={stagger(3)}>
-            Everything lives on this device — works fully offline at the show.
+            Everything is saved on this phone, so the app keeps working at the show with no signal.
           </p>
         </div>
       )}
@@ -198,14 +198,14 @@ export function StockScreen() {
               </div>
 
               <div className="variants-editor">
-                <span className="field">Variants + starting count (leave name blank for one-size)</span>
+                <span className="field">Sizes or colors, and how many you have of each. Leave the name blank if there is only one kind.</span>
                 {draft.variants.map((v, i) => (
                   <div key={i} className="variant-row">
                     <input
                       className="input"
                       value={v.name}
                       placeholder="Size / color"
-                      aria-label={`Variant ${i + 1} name`}
+                      aria-label={`Size or color ${i + 1} name`}
                       onChange={(e) => setVariant(i, 'name', e.target.value)}
                     />
                     <input
@@ -215,12 +215,12 @@ export function StockScreen() {
                       min="0"
                       value={v.startCount}
                       placeholder="Count"
-                      aria-label={`Variant ${i + 1} count`}
+                      aria-label={`Size or color ${i + 1} count`}
                       onChange={(e) => setVariant(i, 'startCount', e.target.value)}
                     />
                     <button
                       className="icon-btn"
-                      aria-label={`Remove variant ${i + 1}`}
+                      aria-label={`Remove size or color ${i + 1}`}
                       onClick={() =>
                         setDraft({
                           ...draft,
@@ -242,7 +242,7 @@ export function StockScreen() {
                   }
                 >
                   <IconPlus size={18} />
-                  Add variant
+                  Add size or color
                 </button>
               </div>
             </div>

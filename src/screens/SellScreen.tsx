@@ -135,7 +135,7 @@ export function SellScreen({ nightStart }: { nightStart: number }) {
           No merch yet.
         </p>
         <p className="muted reveal" style={stagger(2)}>
-          Set up your items in the Stock tab before the show.
+          Add your items in the Stock tab before the show, then come back here to sell.
         </p>
       </div>
     );
@@ -255,9 +255,9 @@ export function SellScreen({ nightStart }: { nightStart: number }) {
         </div>
       </div>
 
-      <Sheet open={overrideFor !== null} onClose={() => setOverrideFor(null)} label="Override price">
+      <Sheet open={overrideFor !== null} onClose={() => setOverrideFor(null)} label="Change price">
         <h2 className="sheet-title">{overrideFor?.name}</h2>
-        <p className="sheet-sub">Override price (door deal, bundle…)</p>
+        <p className="sheet-sub">Set a different price for this sale, like a door deal or a bundle.</p>
         <div className="sheet-body">
           <label className="input-wrap is-big">
             <span className="input-prefix">$</span>

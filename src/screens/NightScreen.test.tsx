@@ -37,8 +37,8 @@ describe('#1 cash box reconciliation', () => {
     render(<NightScreen nightStart={nightStart} />);
 
     await waitFor(() =>
-      expect(screen.getByText(/expected in the drawer/)).toHaveTextContent(
-        'Float $100 + cash sales $25 = $125 expected in the drawer',
+      expect(screen.getByText(/should be in the box/)).toHaveTextContent(
+        'Starting cash $100 + cash sales $25 = $125 that should be in the box',
       ),
     );
   });
@@ -48,9 +48,9 @@ describe('#1 cash box reconciliation', () => {
     const user = userEvent.setup();
     render(<NightScreen nightStart={nightStart} />);
 
-    await user.type(await screen.findByLabelText(/Counted now/), '120');
+    await user.type(await screen.findByLabelText(/How much is in the box now/), '120');
 
-    expect(screen.getByText('$5 short')).toBeInTheDocument();
+    expect(screen.getByText('$5 less than expected')).toBeInTheDocument();
   });
 
   it('confirms a matching count', async () => {
@@ -58,9 +58,9 @@ describe('#1 cash box reconciliation', () => {
     const user = userEvent.setup();
     render(<NightScreen nightStart={nightStart} />);
 
-    await user.type(await screen.findByLabelText(/Counted now/), '125');
+    await user.type(await screen.findByLabelText(/How much is in the box now/), '125');
 
-    expect(screen.getByText('Cash box checks out')).toBeInTheDocument();
+    expect(screen.getByText('Your cash box matches')).toBeInTheDocument();
   });
 
   it('flags an over drawer', async () => {
@@ -68,9 +68,9 @@ describe('#1 cash box reconciliation', () => {
     const user = userEvent.setup();
     render(<NightScreen nightStart={nightStart} />);
 
-    await user.type(await screen.findByLabelText(/Counted now/), '30');
+    await user.type(await screen.findByLabelText(/How much is in the box now/), '30');
 
-    expect(screen.getByText('$5 over expected')).toBeInTheDocument();
+    expect(screen.getByText('$5 more than expected')).toBeInTheDocument();
   });
 });
 
@@ -94,7 +94,7 @@ describe('#3 negative stock flag', () => {
     render(<NightScreen nightStart={0} />);
 
     await waitFor(() =>
-      expect(screen.getByText(/went negative — recount before next show/)).toBeInTheDocument(),
+      expect(screen.getByText(/sold more than you had in stock\. Count these again before the next show/)).toBeInTheDocument(),
     );
     expect(screen.getByRole('cell', { name: '-1 · recount' })).toBeInTheDocument();
   });
@@ -108,7 +108,7 @@ describe('start new night sheet', () => {
     render(<NightScreen nightStart={nightStart} />);
 
     await user.click(await screen.findByRole('button', { name: 'Start new night' }));
-    const float = await screen.findByLabelText('Starting float');
+    const float = await screen.findByLabelText('Starting cash');
     await waitFor(() => expect(float).toHaveValue(80));
 
     await user.clear(float);
@@ -117,7 +117,7 @@ describe('start new night sheet', () => {
 
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
     await waitFor(() =>
-      expect(screen.getByText(/expected in the drawer/)).toHaveTextContent('Float $50'),
+      expect(screen.getByText(/should be in the box/)).toHaveTextContent('Starting cash $50'),
     );
   });
 
@@ -131,7 +131,7 @@ describe('start new night sheet', () => {
     await user.click(screen.getByRole('button', { name: 'Cancel' }));
 
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
-    expect(screen.getByText(/expected in the drawer/)).toHaveTextContent('Float $80');
+    expect(screen.getByText(/should be in the box/)).toHaveTextContent('Starting cash $80');
   });
 });
 

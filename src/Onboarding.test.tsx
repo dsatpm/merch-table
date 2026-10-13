@@ -28,13 +28,13 @@ describe('first-run welcome walkthrough', () => {
     expect(screen.getByText(/two taps/i)).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: 'Next' }));
-    expect(screen.getByText(/long-press/i)).toBeInTheDocument();
+    expect(screen.getByText(/press and hold/i)).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: 'Next' }));
     expect(screen.getByText(/undo/i)).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: 'Next' }));
-    expect(screen.getByText(/reconcile/i)).toBeInTheDocument();
+    expect(screen.getByText(/count your cash box/i)).toBeInTheDocument();
   });
 
   it('dismisses on the final step and remembers the choice', async () => {
