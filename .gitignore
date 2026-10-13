@@ -1,5 +1,16 @@
-node_modules/
+node_modules
 dist/
 dev-dist/
 *.local
 .DS_Store
+
+# TypeScript incremental build cache
+*.tsbuildinfo
+
+# Local tool output
+.playwright-mcp/
+.wrangler/
+.vscode/
+
+# Android Studio project state (regenerated on open)
+android/.idea/
