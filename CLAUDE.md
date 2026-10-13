@@ -46,9 +46,22 @@ Tests only assert at these public boundaries — never by reaching into database
 - `src/migration.test.ts` — v1→v2 schema backfill
 - `src/csv.test.ts` — export column contract and escaping
 - `src/screens/SellScreen.test.tsx` — through rendered UI: taps in, totals/readout out (two/three-tap sales, debounce, undo, advisory stock, price override)
-- `src/screens/NightScreen.test.tsx` — reconcile math, night boundary, negative-stock flags
+- `src/screens/NightScreen.test.tsx` — reconcile math, night boundary, negative-stock flags, start-new-night sheet, share summary (clipboard + fallback sheet)
+- `src/screens/StockScreen.test.tsx` — list left/start counts, item editor sheet (add, edit, add/remove variant, delete, cancel, validation)
+- `src/Sheet.test.tsx` — bottom sheet: portal, exit animation leaves a11y tree immediately, reopen mid-exit, backdrop close, keyboard inset
 
 New screen-level tests: assert through rendered output (`@testing-library/react`), not by reading `db` state directly. `src/test/setup.ts` wires jsdom + `fake-indexeddb` for Dexie in tests.
+
+### UI design system
+
+Mobile only (iOS/Android via Capacitor, PWA on phones), dark only. No desktop layouts. Tokens + every component style live in `src/styles.css`:
+
+- Colors, radii, easing, z-layers are CSS custom properties on `:root` — use them, don't hardcode. Background `#08090b` is mirrored in `capacitor.config.ts`, `src/native.ts`, `index.html`, `vite.config.ts`; change all together.
+- Fonts: Geist + Geist Mono variable woff2, vendored in `src/fonts/` (OFL) so they work offline. No CDN fonts.
+- Icons: hand-drawn hairline set in `src/icons.tsx` (1.5 stroke, `aria-hidden`). Accessible names go on the button, never the icon.
+- Modals: always `Sheet` (`src/Sheet.tsx`), a bottom sheet portaled to `<body>` that lifts above the keyboard via `--kb`.
+- Containers: `.bezel` (outer tray) + `.bezel-core` (inner plate). Entry motion: `.reveal` + `style={stagger(i)}` (`src/stagger.ts`). Animate only `transform`/`opacity`; `.reveal` uses `backwards` fill so `:active` press transforms still apply.
+- Sell is a fixed layout: totals, scrolling grid, docked pay buttons (`main.is-fixed`). Keep the dock in thumb reach.
 
 ### PWA / build
 

@@ -4,19 +4,19 @@ const config: CapacitorConfig = {
   appId: 'com.htpdevs.merchtable',
   appName: 'Merch Table',
   webDir: 'dist',
-  backgroundColor: '#0f1115',
+  backgroundColor: '#08090b',
   ios: {
     contentInset: 'always',
-    backgroundColor: '#0f1115',
+    backgroundColor: '#08090b',
   },
   android: {
-    backgroundColor: '#0f1115',
+    backgroundColor: '#08090b',
     allowMixedContent: false,
   },
   plugins: {
     SplashScreen: {
       launchAutoHide: false,
-      backgroundColor: '#0f1115',
+      backgroundColor: '#08090b',
       androidScaleType: 'CENTER_INSIDE',
     },
   },

@@ -12,7 +12,7 @@ export async function initNativeShell(): Promise<void> {
 
   await StatusBar.setStyle({ style: Style.Dark }); // light text/icons on our dark theme
   if (Capacitor.getPlatform() === 'android') {
-    await StatusBar.setBackgroundColor({ color: '#0f1115' });
+    await StatusBar.setBackgroundColor({ color: '#08090b' });
   }
   await SplashScreen.hide();
 }

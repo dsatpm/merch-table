@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { Sheet } from './Sheet';
+import { IconArrowRight } from './icons';
 
 interface Step {
   title: string;
@@ -16,7 +18,7 @@ const STEPS: Step[] = [
   },
   {
     title: 'Undo is always one tap away',
-    body: 'The ↩ arrow next to the sell buttons refunds the last sale instantly, no matter how loud the room is.',
+    body: 'The curved arrow under the sell buttons refunds the last sale instantly, no matter how loud the room is.',
   },
   {
     title: 'End the night in Night',
@@ -30,8 +32,6 @@ export function Onboarding({ onDismiss }: { onDismiss?: () => void } = {}) {
   const [dismissed, setDismissed] = useState(() => localStorage.getItem(SEEN_KEY) === '1');
   const [step, setStep] = useState(0);
 
-  if (dismissed) return null;
-
   const finish = () => {
     localStorage.setItem(SEEN_KEY, '1');
     setDismissed(true);
@@ -42,31 +42,32 @@ export function Onboarding({ onDismiss }: { onDismiss?: () => void } = {}) {
   const current = STEPS[step];
 
   return (
-    <div className="modal-backdrop">
-      <div className="modal onboarding-modal" role="dialog" aria-modal="true" aria-label="Welcome to Merch Table">
-        <img src="/merch-table.png" alt="" className="onboarding-logo" width={64} height={64} />
-        <h3>{current.title}</h3>
-        <p className="muted">{current.body}</p>
-        <div className="onboarding-dots">
-          {STEPS.map((_, i) => (
-            <span key={i} className={'dot' + (i === step ? ' active' : '')} />
-          ))}
-        </div>
-        <div className="modal-actions onboarding-actions">
-          <button className="ghost" onClick={finish}>
-            Skip
-          </button>
-          {isLast ? (
-            <button className="primary" onClick={finish}>
-              Let's go
-            </button>
-          ) : (
-            <button className="primary" onClick={() => setStep((s) => s + 1)}>
-              Next
-            </button>
-          )}
-        </div>
+    <Sheet open={!dismissed} label="Welcome to Merch Table">
+      <img src="/splash-logo.svg" alt="" className="onboarding-logo" />
+      <div className="onboarding-step" key={step}>
+        <h2 className="sheet-title">{current.title}</h2>
+        <p className="sheet-sub">{current.body}</p>
       </div>
-    </div>
+      <div className="dots" aria-hidden="true">
+        {STEPS.map((_, i) => (
+          <span key={i} className={'dot' + (i === step ? ' is-active' : '')} />
+        ))}
+      </div>
+      <div className="sheet-actions">
+        <button className="btn btn-ghost" onClick={finish}>
+          Skip
+        </button>
+        <span className="spacer" />
+        <button
+          className="btn btn-primary has-icon"
+          onClick={isLast ? finish : () => setStep((s) => s + 1)}
+        >
+          {isLast ? "Let's go" : 'Next'}
+          <span className="btn-icon">
+            <IconArrowRight size={18} />
+          </span>
+        </button>
+      </div>
+    </Sheet>
   );
 }

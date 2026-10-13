@@ -9,6 +9,7 @@ dev-dist/
 
 # Local tool output
 .playwright-mcp/
+.impeccable/
 .wrangler/
 .vscode/
 

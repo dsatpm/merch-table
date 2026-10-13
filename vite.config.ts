@@ -12,8 +12,8 @@ export default defineConfig({
         name: 'Merch Table',
         short_name: 'Merch',
         description: 'Offline merch table sales tracker',
-        theme_color: '#0f1115',
-        background_color: '#0f1115',
+        theme_color: '#08090b',
+        background_color: '#08090b',
         display: 'standalone',
         orientation: 'portrait',
         icons: [
