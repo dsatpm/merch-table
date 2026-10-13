@@ -57,7 +57,7 @@ export function StorageBanner() {
           app to the home screen.
         </p>
         <button
-          className="primary"
+          className="btn btn-primary"
           onClick={() => {
             localStorage.setItem('storage-warn-ack', '1');
             setAcked(true);
@@ -78,12 +78,12 @@ export function StorageBanner() {
         </p>
         <div className="banner-actions">
           {installEvt && (
-            <button className="primary" onClick={() => installEvt.prompt()}>
+            <button className="btn btn-primary" onClick={() => installEvt.prompt()}>
               Install
             </button>
           )}
           <button
-            className="ghost"
+            className="btn btn-ghost"
             onClick={() => {
               localStorage.setItem('install-nudge-dismissed', '1');
               setInstallDismissed(true);

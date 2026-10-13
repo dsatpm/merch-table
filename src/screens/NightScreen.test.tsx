@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { db, getSetting, recordSale, startNewNight, type Item } from '../db';
 import { NightScreen } from './NightScreen';
 
@@ -17,6 +17,10 @@ beforeEach(async () => {
   await db.open();
   localStorage.clear();
   await db.items.add(shirt);
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
 });
 
 describe('#1 cash box reconciliation', () => {
@@ -46,7 +50,7 @@ describe('#1 cash box reconciliation', () => {
 
     await user.type(await screen.findByLabelText(/Counted now/), '120');
 
-    expect(screen.getByText('⚠ $5 short')).toBeInTheDocument();
+    expect(screen.getByText('$5 short')).toBeInTheDocument();
   });
 
   it('confirms a matching count', async () => {
@@ -56,7 +60,7 @@ describe('#1 cash box reconciliation', () => {
 
     await user.type(await screen.findByLabelText(/Counted now/), '125');
 
-    expect(screen.getByText('✓ Cash box checks out')).toBeInTheDocument();
+    expect(screen.getByText('Cash box checks out')).toBeInTheDocument();
   });
 
   it('flags an over drawer', async () => {
@@ -66,7 +70,7 @@ describe('#1 cash box reconciliation', () => {
 
     await user.type(await screen.findByLabelText(/Counted now/), '30');
 
-    expect(screen.getByText('⚠ $5 over expected')).toBeInTheDocument();
+    expect(screen.getByText('$5 over expected')).toBeInTheDocument();
   });
 });
 
@@ -93,5 +97,75 @@ describe('#3 negative stock flag', () => {
       expect(screen.getByText(/went negative — recount before next show/)).toBeInTheDocument(),
     );
     expect(screen.getByRole('cell', { name: '-1 · recount' })).toBeInTheDocument();
+  });
+});
+
+describe('start new night sheet', () => {
+  it('prefills the last float and records the new one', async () => {
+    await startNewNight(80);
+    const nightStart = await getSetting('nightStart');
+    const user = userEvent.setup();
+    render(<NightScreen nightStart={nightStart} />);
+
+    await user.click(await screen.findByRole('button', { name: 'Start new night' }));
+    const float = await screen.findByLabelText('Starting float');
+    await waitFor(() => expect(float).toHaveValue(80));
+
+    await user.clear(float);
+    await user.type(float, '50');
+    await user.click(screen.getByRole('button', { name: 'Start night' }));
+
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    await waitFor(() =>
+      expect(screen.getByText(/expected in the drawer/)).toHaveTextContent('Float $50'),
+    );
+  });
+
+  it('cancel leaves the night alone', async () => {
+    await startNewNight(80);
+    const nightStart = await getSetting('nightStart');
+    const user = userEvent.setup();
+    render(<NightScreen nightStart={nightStart} />);
+
+    await user.click(await screen.findByRole('button', { name: 'Start new night' }));
+    await user.click(screen.getByRole('button', { name: 'Cancel' }));
+
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    expect(screen.getByText(/expected in the drawer/)).toHaveTextContent('Float $80');
+  });
+});
+
+describe('share summary', () => {
+  const withSale = async () => {
+    await recordSale(shirt, 'M', 'cash');
+    const user = userEvent.setup(); // installs a clipboard stub on navigator
+    render(<NightScreen nightStart={0} />);
+    const share = await screen.findByRole('button', { name: 'Share summary' });
+    await waitFor(() => expect(share).toBeEnabled());
+    return { user, share };
+  };
+
+  it('copies to the clipboard and confirms on the button', async () => {
+    const { user, share } = await withSale();
+    const write = vi.spyOn(navigator.clipboard, 'writeText');
+
+    await user.click(share);
+
+    expect(write.mock.calls[0][0]).toContain('Shirt M: 1');
+    expect(await screen.findByRole('button', { name: 'Copied to clipboard' })).toBeInTheDocument();
+  });
+
+  it('falls back to a sheet with the text when the clipboard is unavailable', async () => {
+    const { user, share } = await withSale();
+    vi.spyOn(navigator.clipboard, 'writeText').mockRejectedValue(new Error('denied'));
+
+    await user.click(share);
+
+    const sheet = await screen.findByRole('dialog', { name: 'Night summary' });
+    expect(sheet).toHaveTextContent('Shirt M: 1');
+    expect(sheet).toHaveTextContent('Cash $25 · Card/Venmo $0 · Total $25');
+
+    await user.click(screen.getByRole('button', { name: 'Close' }));
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
   });
 });
