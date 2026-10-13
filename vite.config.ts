@@ -11,7 +11,7 @@ export default defineConfig({
       manifest: {
         name: 'Merch Table',
         short_name: 'Merch',
-        description: 'Offline merch table sales tracker',
+        description: 'Track merch sales at your shows, even offline.',
         theme_color: '#08090b',
         background_color: '#08090b',
         display: 'standalone',

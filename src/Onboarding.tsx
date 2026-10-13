@@ -10,19 +10,19 @@ interface Step {
 const STEPS: Step[] = [
   {
     title: 'Two taps to sell',
-    body: 'Tap the item, then tap Cash or Card/Venmo. That’s a sale — sized items add one extra tap to pick a size.',
+    body: 'Tap an item, then tap Cash or Card/Venmo. That’s the whole sale. If the item comes in sizes, you’ll tap one more time to pick the size.',
   },
   {
-    title: 'Door deals happen',
-    body: 'Long-press an item to override its price before you tap payment — bundles, discounts, whatever the deal is tonight.',
+    title: 'Give someone a deal',
+    body: 'Press and hold an item to change its price for that sale. Use it for bundles, discounts, or any deal you make at the table.',
   },
   {
     title: 'Undo is always one tap away',
-    body: 'The curved arrow under the sell buttons refunds the last sale instantly, no matter how loud the room is.',
+    body: 'Made a mistake? Tap the curved arrow under the payment buttons to take back the last sale.',
   },
   {
-    title: 'End the night in Night',
-    body: 'See totals, export a CSV, and reconcile the cash box — it’ll flag any difference between counted and expected cash.',
+    title: 'Wrap up in the Night tab',
+    body: 'See what you sold, export a CSV, and count your cash box. The app will tell you if the cash doesn’t match what it expects.',
   },
 ];
 

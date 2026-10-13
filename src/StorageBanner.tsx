@@ -52,9 +52,9 @@ export function StorageBanner() {
     return (
       <div className="banner warn">
         <p>
-          <strong>This browser is not promising to keep your data.</strong> Private browsing, or
-          storage the browser may evict. Sales could vanish. Use a normal window and install the
-          app to the home screen.
+          <strong>This browser might not keep your data.</strong> This can happen in private
+          browsing or when the browser clears space, and your sales could be lost. Open the app in
+          a normal window and add it to your home screen.
         </p>
         <button
           className="btn btn-primary"
@@ -73,8 +73,8 @@ export function StorageBanner() {
     return (
       <div className="banner info">
         <p>
-          Install to the home screen for reliable offline storage
-          {isIOS && !installEvt ? ' — Share → Add to Home Screen' : ''}.
+          Add this app to your home screen so your sales stay saved when you’re offline.
+          {isIOS && !installEvt ? ' Tap Share, then Add to Home Screen.' : ''}
         </p>
         <div className="banner-actions">
           {installEvt && (
